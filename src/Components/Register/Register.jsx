@@ -4,11 +4,13 @@ import * as Yup from 'yup';
 
 const Register = () => {
   const LoginSchema = Yup.object().shape({
-    Name: Yup.string().required('Напишіть Ваше Імя'),
-    LastName: Yup.string().required('Напишіть Ваше Призвище'),
-    login: Yup.string().required('Напишіть Логін'),
-    password: Yup.string().required('Придумайте пароль'),
-    RepeatPassword: Yup.string().required('Повторіть пароль'),
+    Name: Yup.string().required('Обов’язкове поле'),
+    LastName: Yup.string().required('Обов’язкове поле'),
+    login: Yup.string().required('Обов’язкове поле'),
+    password: Yup.string().required('Обов’язкове поле'),
+    RepeatPassword: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Паролі повинні співпадати')
+    .required('Обов’язкове поле'),
   });
 
 
@@ -17,6 +19,7 @@ const Register = () => {
       initialValues={{Name: '',LastName: '',login: '',password: '',  RepeatPassword: '' }}
       validationSchema={LoginSchema}
       onSubmit={values => {
+        //Просто вивожу те що увів користувач
         console.log('Імя:', values.Name);
         console.log('Призвище:', values.LastName);
         console.log('Логін:', values.login);
@@ -32,52 +35,46 @@ const Register = () => {
       <br></br>
       <br></br>
       <div>
-            <Field 
+      <Field 
               type="text" 
               name="Name" 
-              placeholder="Name" 
-              />
+              placeholder="Ім’я" 
+            />
             <ErrorMessage name="Name" component="div" />
-      </div>
-      <br></br>
-      <div>
+          </div>
+          <div>
             <Field 
               type="text" 
               name="LastName" 
-              placeholder="LastName" 
+              placeholder="Прізвище" 
             />
             <ErrorMessage name="LastName" component="div" />
-      </div>
-      <br></br>
-      <div>
+          </div>
+          <div>
             <Field 
               type="text" 
               name="login" 
-              placeholder="Login" 
-              />
+              placeholder="Логін" 
+            />
             <ErrorMessage name="login" component="div" />
-      </div>
-          <br />
-      <div>
+          </div>
+          <div>
             <Field 
               type="password" 
               name="password" 
-              placeholder="Password" 
-              />
+              placeholder="Пароль" 
+            />
             <ErrorMessage name="password" component="div" />
-      </div>
-      <br></br>
-      <div>
+          </div>
+          <div>
             <Field 
               type="password" 
-              name="Repeatpassword" 
-              placeholder="RepeatPassword" 
-              />
-            <ErrorMessage name="Repeatpassword" component="div" />
-      </div>
-      
-      <br></br>
-      <button type="submit" disabled={isSubmitting}>
+              name="RepeatPassword" 
+              placeholder="Повторний пароль" 
+            />
+            <ErrorMessage name="RepeatPassword" component="div" />
+          </div>
+          <button type="submit" disabled={isSubmitting}>
             Зареєструватись
           </button>
     </Form>
